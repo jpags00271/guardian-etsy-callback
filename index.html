@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Etsy Callback</title>
+<style>
+body{font-family:-apple-system,Segoe UI,Arial,sans-serif;max-width:640px;margin:40px auto;padding:0 16px;color:#222;background:#fff}
+h1{font-size:22px}
+.box{border:1px solid #ccc;border-radius:8px;padding:16px;margin:16px 0;background:#f7f7f7}
+code{display:block;word-break:break-all;font-size:15px;margin-top:6px}
+.bad{color:#b00020}
+</style>
+</head>
+<body>
+<h1>Etsy Callback</h1>
+<p id="msg">Checking for a code from Etsy...</p>
+<div class="box" id="codebox" hidden>
+<strong>Your code</strong>
+<code id="code"></code>
+</div>
+<div class="box" id="statebox" hidden>
+<strong>State</strong>
+<code id="state"></code>
+</div>
+<p>This page stores nothing and sends nothing anywhere. Copy the code above back to Claude. It works once and expires in a few minutes.</p>
+<script>
+var p = new URLSearchParams(window.location.search);
+var msg = document.getElementById("msg");
+if (p.get("error")) {
+  msg.className = "bad";
+  msg.textContent = "Etsy returned an error: " + p.get("error") + (p.get("error_description") ? " (" + p.get("error_description") + ")" : "");
+} else if (p.get("code")) {
+  msg.textContent = "Etsy sent a code.";
+  document.getElementById("code").textContent = p.get("code");
+  document.getElementById("codebox").hidden = false;
+  if (p.get("state")) {
+    document.getElementById("state").textContent = p.get("state");
+    document.getElementById("statebox").hidden = false;
+  }
+} else {
+  msg.textContent = "No code received. This is normal if you opened this page directly.";
+}
+</script>
+</body>
+</html>
